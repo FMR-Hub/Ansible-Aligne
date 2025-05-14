@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+CONFIG_FILE="$HOME/ansible-aligne/functions/ansiblealigne.conf"
+
+read -rp "Where should new playbooks be saved? (e.g. ~/ansible-infra/playbooks): " INPUT
+INPUT=${INPUT/#\~/$HOME}  # Replace ~ with full path
+echo "PLAYBOOK_BASE_DIR=$INPUT" > "$CONFIG_FILE"
+echo "Configuration file created: $CONFIG_FILE"
+mkdir -p "$INPUT"
+echo "Test directory created: $INPUT"
+
