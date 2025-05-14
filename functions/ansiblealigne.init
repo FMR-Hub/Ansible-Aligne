@@ -7,13 +7,30 @@ CONFIG_FILE="$HOME/.ansiblealigne.conf"
 echo "### Ansible-Aligne Initialization"
 
 read -rp "Enter the base directory for new playbooks (e.g. ~/ansible-infra/playbooks): " INPUT_PATH
-
-# Expand tilde (~) manually if used
 INPUT_PATH="${INPUT_PATH/#\~/$HOME}"
 
 echo "PLAYBOOK_BASE_DIR=$INPUT_PATH" > "$CONFIG_FILE"
 echo "[OK] Configuration written to $CONFIG_FILE"
+
 mkdir -p "$INPUT_PATH"
 echo "[OK] Playbook directory ensured at: $INPUT_PATH"
 
+read -rp "Do you use the Ansibro file structure? (y/N): " USE_ANSIBRO
+USE_ANSIBRO="${USE_ANSIBRO,,}"  # normalize to lowercase
+
+if [[ "$USE_ANSIBRO" == "y" ]]; then
+    read -rp "Enter the root path of your Ansibro structure (e.g. ~/ansibro): " ANSIBRO_PATH
+    ANSIBRO_PATH="${ANSIBRO_PATH/#\~/$HOME}"
+
+    {
+        echo "ANSIBRO_ROOT=$ANSIBRO_PATH"
+        echo "ANSIBRO_TASK_REPO=\$ANSIBRO_ROOT/task-repo"
+        echo "ANSIBRO_TASK_TEMPLATE=\$ANSIBRO_ROOT/task-meta-template.yml"
+        echo "ANSIBRO_ALL_TASKS=\$ANSIBRO_ROOT/all_tasks"
+    } >> "$CONFIG_FILE"
+
+    echo "[OK] Ansibro integration configured"
+fi
+
 echo "### Initialization complete"
+
