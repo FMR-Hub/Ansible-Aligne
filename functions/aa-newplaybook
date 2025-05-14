@@ -14,5 +14,16 @@ echo "Name is: $NAME_PLAYBOOK"
 
 read -rp "do you wanna initialize a role? :" NAME_ROLE
 
-if [ -z "$NAME_PLAYBOOK" ]; then
+if [ -z "$NAME_ROLE" ]; then
   echo "No role initialized. Going to menu"
+else
+  echo "wir tun mal so als würde das funktionieren"
+  echo "Initialisiere rolle"
+  echo "bla"
+  echo "bla"    echo "bla"
+  echo "bla"
+  echo "bla"
+  echo "bla"
+  echo "bla"
+  echo "bla"
+fi
