@@ -1,1 +1,8 @@
+#!/usr/bin/env bash
 
+
+source ~/.ansiblealigne.conf
+
+NAME="$1"
+
+echo = "Name gleich ("$1")"
