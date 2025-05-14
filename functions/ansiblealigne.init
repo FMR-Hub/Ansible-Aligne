@@ -1,11 +1,19 @@
 #!/usr/bin/env bash
 
-CONFIG_FILE="$HOME/ansible-aligne/functions/ansiblealigne.conf"
+set -euo pipefail
 
-read -rp "Where should new playbooks be saved? (e.g. ~/ansible-infra/playbooks): " INPUT
-INPUT=${INPUT/#\~/$HOME}  # Replace ~ with full path
-echo "PLAYBOOK_BASE_DIR=$INPUT" > "$CONFIG_FILE"
-echo "Configuration file created: $CONFIG_FILE"
-mkdir -p "$INPUT"
-echo "Test directory created: $INPUT"
+CONFIG_FILE="$HOME/.ansiblealigne.conf"
 
+echo "### Ansible-Aligne Initialization"
+
+read -rp "Enter the base directory for new playbooks (e.g. ~/ansible-infra/playbooks): " INPUT_PATH
+
+# Expand tilde (~) manually if used
+INPUT_PATH="${INPUT_PATH/#\~/$HOME}"
+
+echo "PLAYBOOK_BASE_DIR=$INPUT_PATH" > "$CONFIG_FILE"
+echo "[OK] Configuration written to $CONFIG_FILE"
+mkdir -p "$INPUT_PATH"
+echo "[OK] Playbook directory ensured at: $INPUT_PATH"
+
+echo "### Initialization complete"
