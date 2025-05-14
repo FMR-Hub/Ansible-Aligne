@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 
-
+# Load configuration
 source ~/.ansiblealigne.conf
 
+# Check if a name was passed
 NAME="$1"
 
-echo = "Name gleich $1"
+if [ -z "$NAME" ]; then
+  read -rp "What is the name of your playbook? " NAME
+fi
+
+echo "Name is: $NAME"
