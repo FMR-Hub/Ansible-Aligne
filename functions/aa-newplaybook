@@ -4,12 +4,15 @@
 source ~/.ansiblealigne.conf
 
 # Check if a name was passed
-NAME="$1"
+NAME_PLAYBOOK="$1"
 
-if [ -z "$NAME" ]; then
-  read -rp "What is the name of your playbook? " NAME
+if [ -z "$NAME_PLAYBOOK" ]; then
+  read -rp "What is the name of your playbook? " NAME_PLAYBOOK
 fi
 
-echo "Name is: $NAME"
+echo "Name is: $NAME_PLAYBOOK"
 
-read -rp "do you wanna initialize a role?"
+read -rp "do you wanna initialize a role? :" NAME_ROLE
+
+if [ -z "$NAME_PLAYBOOK" ]; then
+  echo "No role initialized. Going to menu"
