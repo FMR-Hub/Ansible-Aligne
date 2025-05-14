@@ -11,3 +11,5 @@ if [ -z "$NAME" ]; then
 fi
 
 echo "Name is: $NAME"
+
+read -rp "do you wanna initialize a role?"
