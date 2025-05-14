@@ -17,18 +17,6 @@ read -rp "do you wanna initialize a role? :" NAME_ROLE
 if [ -z "$NAME_ROLE" ]; then
   echo "No role initialized. Going to menu"
 else
-  echo "wir tun mal so als würde das funktionieren"
-  sleep 2  # Wartet 2 Sekunden
-
-  echo "Initialisiere rolle"
-  sleep 2  # Wartet 2 Sekunden
-  echo "bla"
-  echo "bla"    echo "bla"
-  echo "bla"
-  sleep 2  # Wartet 2 Sekunden
-  echo "bla"
-  echo "bla"
-  echo "bla"
-  sleep 2  # Wartet 2 Sekunden
-  echo "bla"
+  echo "Initializing role: $NAME_ROLE"
+  ansible-galaxy init "$NAME_ROLE"
 fi
