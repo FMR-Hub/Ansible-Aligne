@@ -28,7 +28,7 @@ if [ -z "$NAME_ROLE" ]; then
 
     # Role Decition
     if [[ "$ROLE_CREATION_DECIDER" =~ ^[YyJj]$ ]]; then
-      read -rp "Name your Role:" NAME_ROLE
+      read -rp "${INP_CLR}Name your Role:" NAME_ROLE
     else
       echo "There will be no Role initialized"
       NAME_ROLE="" # Left empty
@@ -41,3 +41,5 @@ else
   echo "Initializing role: $NAME_ROLE"
   ansible-galaxy init "$NAME_ROLE"
 fi
+
+echo "${HLP_CLR}Role was initialized."
