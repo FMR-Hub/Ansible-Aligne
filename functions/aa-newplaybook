@@ -17,7 +17,7 @@ if [ -z "$NAME_ROLE" ]; then
 
     # Loop to check User Role Desition inpit
     while true; do
-      read -rp "Do you want to craate a Role for your Playbook abd have it initialized? (Y/N) " ROLE_CREATION_DECIDER
+      read -rp "${INP_CLR}Do you want to craate a Role for your Playbook abd have it initialized? (Y/N) " ROLE_CREATION_DECIDER
       # Check Input
       if [[ "$ROLE_CREATION_DECIDER" =~ ^[YyJjNn]$ ]]; then
             break # Leave Loop wehn input is correct
