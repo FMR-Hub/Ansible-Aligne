@@ -10,7 +10,15 @@ NAME_PLAYBOOK="$1"
 # Check if a role name was Provided on the 2nd argument
 NAME_ROLE="$2"
 
-
+if [ -z "$NAME_PLAYBOOK" ]; then
+  # If no name was provided, prompt the user for a name
+  read -rp "${INP_CLR}Please enter a name for your new playbook: " NAME_PLAYBOOK
+fi   
+# Check if the playbook name is empty after the prompt
+if [ -z "$NAME_PLAYBOOK" ]; then
+  echo "${ERR_CLR}No playbook name provided. Exiting."
+  exit 1
+fi
 # Check if a role name was not provided on the cmd line
 if [ -z "$NAME_ROLE" ]; then
   ROLE_CREATION_DECIDER="" # Initialize variable
@@ -22,7 +30,7 @@ if [ -z "$NAME_ROLE" ]; then
       if [[ "$ROLE_CREATION_DECIDER" =~ ^[YyJjNn]$ ]]; then
             break # Leave Loop wehn input is correct
       else
-        echo "Allowed inputs: Y N and y n"
+        echo "${ERR_CLR}Allowed inputs: Y N and y n"
       fi
     done
 
