@@ -3,16 +3,37 @@
 # Load configuration
 source ~/.ansiblealigne.conf
 
+
 # Check if a name was passed
 NAME_PLAYBOOK="$1"
 
-if [ -z "$NAME_PLAYBOOK" ]; then
-  read -rp "What is the name of your playbook? " NAME_PLAYBOOK
+# Check if a role name was Provided on the 2nd argument
+NAME_ROLE="$2"
+
+
+# Check if a role name was not provided on the cmd line
+if [ -z "$NAME_ROLE" ]; then
+  ROLE_CREATION_DECIDER="" # Initialize variable
+
+    # Loop to check User Role Desition inpit
+    while true; do
+      read -rp "Do you want to craate a Role for your Playbook abd have it initialized? (Y/N) " ROLE_CREATION_DECIDER
+      # Check Input
+      if [[ "$ROLE_CREATION_DECIDER" =~ ^[YyJjNn]$ ]]; then
+            break # Leave Loop wehn input is correct
+      else
+        echo "Allowed inputs: Y N and y n"
+      fi
+    done
+
+    # Role Decition
+    if [[ "$ROLE_CREATION_DECIDER" =~ ^[YyJj]$ ]]; then
+      read -rp "Name your Role:" NAME_ROLE
+    else
+      echo "There will be no Role initialized"
+      NAME_ROLE="" # Left empty
+    fi
 fi
-
-echo "Name is: $NAME_PLAYBOOK"
-
-read -rp "do you wanna initialize a role? :" NAME_ROLE
 
 if [ -z "$NAME_ROLE" ]; then
   echo "No role initialized. Going to menu"
