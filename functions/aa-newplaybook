@@ -3,6 +3,14 @@
 # Load configuration
 source ~/.ansiblealigne.conf
 
+# Source variables from ansiblealigne.conf
+if [ -f "./ansiblealigne.conf" ]; then
+    source ./ansiblealigne.conf
+else
+    echo "Configuration file ansiblealigne.conf not found."
+    exit 1
+fi
+
 
 # Check if a name was passed
 NAME_PLAYBOOK="$1"
@@ -19,6 +27,16 @@ if [ -z "$NAME_PLAYBOOK" ]; then
   echo "${ERR_CLR}No playbook name provided. Exiting."
   exit 1
 fi
+# CHeck if the playbook file already exists
+if [ -f "$NAME_PLAYBOOK.yml" ]; then
+  echo "${ERR_CLR}Playbook file '$NAME_PLAYBOOK.yml' already exists. Exiting."
+  exit 1
+fi
+# Create the playbook file
+echo "${HLP_CLR}Creating playbook file: $NAME_PLAYBOOK.yml"
+touch "$PLAYBOOK_PATH$NAME_PLAYBOOK.yml"
+# Write the initial content to the playbook file
+
 # Check if a role name was not provided on the cmd line
 if [ -z "$NAME_ROLE" ]; then
   ROLE_CREATION_DECIDER="" # Initialize variable
