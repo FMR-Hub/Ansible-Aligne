@@ -30,9 +30,8 @@ fi
 
 #===End of Safty checks===#
 
-# Restarting the installation process
 echo "Installing AnsibleAligne..."
-apt install -y ansible &>&1
+apt install -y ansible
 if [ $? -ne 0 ]; then
     echo "Sorry Ansible installation failed. Please check your package manager or internet connection."
     exit 1
