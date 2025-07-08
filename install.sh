@@ -8,13 +8,13 @@
 
 # check for sudo
 if [ "$(id -u)" -ne 0 ]; then
-    echo "You need to run this script as root or with sudo."
+    echo "Hey, and Sorry: You need to run this script as root or with sudo."
     exit 1
 fi
 
 # Checking for existing installation
 if [ -d "/usr/local/bin/AnsibleAligne" ]; then
-    echo "AnsibleAligne is already installed."
+    echo "I see, AnsibleAligne is already installed."
     read -p "Do you want to reinstall? (y/n): " choice
     if [[ "$choice" != "y" && "$choice" != "Y" ]]; then
         echo "Exiting installation."
@@ -22,7 +22,7 @@ if [ -d "/usr/local/bin/AnsibleAligne" ]; then
         echo "No configuration changes were made."
         exit 0
     else
-        echo "Uninstalling AnsibleAligne..."
+        echo "We are Uninstalling AnsibleAligne..."
         rm -rf /usr/local/bin/AnsibleAligne
     fi
 fi
@@ -32,6 +32,11 @@ fi
 
 # Restarting the installation process
 echo "Installing AnsibleAligne..."
+apt install -y ansible &>&1
+if [ $? -ne 0 ]; then
+    echo "Sorry Ansible installation failed. Please check your package manager or internet connection."
+    exit 1
+fi
 echo "This script will install AnsibleAligne in /usr/local/bin/AnsibleAligne"
 echo "It will also move the configuration files to /etc/AnsibleAligne"
 
@@ -46,7 +51,7 @@ echo "Creating installation directory..."
 mkdir -p /usr/local/bin/AnsibleAligne
 echo
 
-for file in ../AnsibleAligne/bin/; do
+for file in ./AnsibleAligne/bin/; do
     mv "$file" /usr/local/bin/AnsibleAligne/
     chmod +x /usr/local/bin/AnsibleAligne/"$(basename "$file")"
     echo "Moved $(basename "$file") to /usr/local/bin/AnsibleAligne/"
@@ -55,7 +60,7 @@ done
 # move config files to /etc/AnsibleAligne
 sudo mkdir -p /etc/AnsibleAligne
 
-for file in ../AnsibleAligne/config/; do
+for file in ./AnsibleAligne/config/; do
     sudo mv "$file" /etc/AnsibleAligne/
     echo "Moved $(basename "$file") to /etc/AnsibleAligne/"
 done
