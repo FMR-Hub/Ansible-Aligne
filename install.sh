@@ -46,7 +46,7 @@ echo "Creating installation directory..."
 mkdir -p /usr/local/bin/AnsibleAligne
 echo
 
-for file in ../AnsibleAligne/bin/*; do
+for file in ../AnsibleAligne/bin/; do
     mv "$file" /usr/local/bin/AnsibleAligne/
     chmod +x /usr/local/bin/AnsibleAligne/"$(basename "$file")"
     echo "Moved $(basename "$file") to /usr/local/bin/AnsibleAligne/"
@@ -55,7 +55,7 @@ done
 # move config files to /etc/AnsibleAligne
 sudo mkdir -p /etc/AnsibleAligne
 
-for file in ../AnsibleAligne/config/*; do
+for file in ../AnsibleAligne/config/; do
     sudo mv "$file" /etc/AnsibleAligne/
     echo "Moved $(basename "$file") to /etc/AnsibleAligne/"
 done
@@ -82,7 +82,3 @@ else
 fi
 
 echo "Installation complete!"
-
-
-
-
