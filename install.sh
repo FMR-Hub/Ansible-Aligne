@@ -65,7 +65,7 @@ done
 #==Finalization===#
 echo "AnsibleAligne has been successfully installed in /usr/local/bin/AnsibleAligne"
 echo "Configuration files have been moved to /etc/AnsibleAligne"
-ECHO "Do you want to configure the AnsibleAligne.conf file now? (y/n): "
+echo "Do you want to configure the AnsibleAligne.conf file now? (y/n): "
 read configure_choice
 if [[ "$configure_choice" == "y" || "$configure_choice" == "Y" ]]; then
     echo "Perfekt!"
