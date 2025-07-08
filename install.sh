@@ -46,9 +46,9 @@ echo "Creating installation directory..."
 mkdir -p /usr/local/bin/AnsibleAligne
 echo
 
-for each file in /bin/*; do
+for file in ../AnsibleAligne/bin/*; do
     mv "$file" /usr/local/bin/AnsibleAligne/
-    chmod +x /etc/AnsibleAligne/"$(basename "$file")"
+    chmod +x /usr/local/bin/AnsibleAligne/"$(basename "$file")"
     echo "Moved $(basename "$file") to /usr/local/bin/AnsibleAligne/"
 done
 
