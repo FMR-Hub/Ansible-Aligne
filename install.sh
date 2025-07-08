@@ -1,39 +1,88 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+# This script installs AnsibleAligne
 
-INSTALL_DIR="$HOME/bin"
-SOURCE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/functions"
-CONFIG_FILE="$HOME/.ansiblealigne.conf"
+# Tool: AnsibleAligne Playbook Creation Tool
 
-echo "### Starting Ansible-Aligne installation"
-echo "Target install directory: $INSTALL_DIR"
-echo "Source functions directory: $SOURCE_DIR"
-if [ ! -d "$SOURCE_DIR" ]; then
-  echo "Error: Functions directory '$SOURCE_DIR' not found."
-  exit 1
+#===Safty checks===#
+
+# check for sudo
+if [ "$(id -u)" -ne 0 ]; then
+    echo "You need to run this script as root or with sudo."
+    exit 1
 fi
-mkdir -p "$INSTALL_DIR"
-echo "[OK] Created or confirmed target directory: $INSTALL_DIR"
-cp "$SOURCE_DIR/"* "$INSTALL_DIR/"
-echo "[OK] Copied scripts to $INSTALL_DIR"
 
-chmod +x "$INSTALL_DIR/"*
-echo "[OK] Marked scripts as executable"
+# Checking for existing installation
+if [ -d "/usr/local/bin/AnsibleAligne" ]; then
+    echo "AnsibleAligne is already installed."
+    read -p "Do you want to reinstall? (y/n): " choice
+    if [[ "$choice" != "y" && "$choice" != "Y" ]]; then
+        echo "Exiting installation."
+        echo "AnsibleAligne is already installed."
+        echo "No configuration changes were made."
+        exit 0
+    else
+        echo "Uninstalling AnsibleAligne..."
+        rm -rf /usr/local/bin/AnsibleAligne
+    fi
+fi
 
-if ! echo "$PATH" | grep -q "$HOME/bin"; then
-  echo 'export PATH="$HOME/bin:$PATH"' >> "$HOME/.bashrc"
-  echo "[INFO] Added \$HOME/bin to PATH via .bashrc"
-  echo "Please run 'source ~/.bashrc' or restart your terminal."
+
+#===End of Safty checks===#
+
+# Restarting the installation process
+echo "Installing AnsibleAligne..."
+echo "This script will install AnsibleAligne in /usr/local/bin/AnsibleAligne"
+echo "It will also move the configuration files to /etc/AnsibleAligne"
+
+#==Installation process===#
+
+# Create the /bin already directory if it doesn't exist
+echo "Checking for /usr/local/bin/ directory..."
+mkdir -p /usr/local/bin/
+
+# Create the installation directory
+echo "Creating installation directory..."
+mkdir -p /usr/local/bin/AnsibleAligne
+echo
+
+for each file in /bin/*; do
+    mv "$file" /usr/local/bin/AnsibleAligne/
+    chmod +x /etc/AnsibleAligne/"$(basename "$file")"
+    echo "Moved $(basename "$file") to /usr/local/bin/AnsibleAligne/"
+done
+
+# move config files to /etc/AnsibleAligne
+sudo mkdir -p /etc/AnsibleAligne
+
+for file in ../AnsibleAligne/config/*; do
+    sudo mv "$file" /etc/AnsibleAligne/
+    echo "Moved $(basename "$file") to /etc/AnsibleAligne/"
+done
+
+#==End of Installation process===#
+
+#==Finalization===#
+echo "AnsibleAligne has been successfully installed in /usr/local/bin/AnsibleAligne"
+echo "Configuration files have been moved to /etc/AnsibleAligne"
+ECHO "Do you want to configure the AnsibleAligne.conf file now? (y/n): "
+read configure_choice
+if [[ "$configure_choice" == "y" || "$configure_choice" == "Y" ]]; then
+    echo "Perfekt!"
+    read -p "Enter the path to your Ansible playbook directory: " playbook_path
+    read -p "Enter the path to your Ansible roles directory: " roles_path
+    read -p "Enter the path to your Ansible inventory file: " inventory_path
+
+
+./aa_base_config.sh "$playbook_path" "$roles_path" "$inventory_path"
+
+    echo "AnsibleAligne configuration has been set up."
 else
-  echo "[OK] \$HOME/bin is already in PATH"
+    echo "You can configure AnsibleAligne later by editing /etc/AnsibleAligne/AnsibleAligne.conf"
 fi
 
-if [ ! -f "$CONFIG_FILE" ]; then
-  echo "[INFO] No configuration file found. Running init script..."
-  "$INSTALL_DIR/ansiblealigne.init"
-else
-  echo "[OK] Existing config found at $CONFIG_FILE"
-fi
+echo "Installation complete!"
 
-echo "### Ansible-Aligne installation complete"
+
+
+
